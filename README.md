@@ -1,6 +1,7 @@
 # hassio_IsraelRails
 Israel Rails component for HomeAssistant
 
+![alt text](https://github.com/pickeld/hassio_IsraelRails/blob/master/Capture.PNG)
 
 BETA!
 
