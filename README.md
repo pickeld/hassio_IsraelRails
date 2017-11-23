@@ -17,8 +17,8 @@ instructions:
       
 pick your fromStation and toStation from the list below:
 
-1220 - לב המפרץ
-1240 - יקנעם - כפר יהושע
+1220 - <br>לב המפרץ
+1240 - <br>יקנעם - כפר יהושע
 1250 - מגדל העמק - כפר ברוך
 1260 - עפולה
 1280 - בית שאן
