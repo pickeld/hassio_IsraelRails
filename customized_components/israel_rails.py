@@ -95,7 +95,7 @@ def async_setup(hass, config):
 class IsraelRail(Entity):
 
     def __init__(self, name, from_station, to_station):
-        self.entity_id = ENTITY_ID_FORMAT.format(name.replace('-', '').replace(' ', '_'))
+        self.entity_id = ENTITY_ID_FORMAT.format((name.replace('-', '').replace(' ', '_')).lower())
         self._name = name
         self._from_station = from_station
         self._to_station = to_station
@@ -144,32 +144,41 @@ class IsraelRail(Entity):
 
         routes = api_decoded['Data']
 
-        for route in routes['Routes']:
-            train = route['Train'][0]
-            if departure_time:
-                if datetime.datetime.strptime(train['DepartureTime'], '%d/%m/%Y %H:%M:%S') < datetime.datetime.strptime(departure_time, '%d/%m/%Y %H:%M:%S') and datetime.datetime.strptime(train['DepartureTime'], '%d/%m/%Y %H:%M:%S') > current_date:
+        if routes:
+            for route in routes['Routes']:
+                train = route['Train'][0]
+                if departure_time:
+                    if datetime.datetime.strptime(train['DepartureTime'], '%d/%m/%Y %H:%M:%S') < datetime.datetime.strptime(departure_time, '%d/%m/%Y %H:%M:%S') and datetime.datetime.strptime(train['DepartureTime'], '%d/%m/%Y %H:%M:%S') > current_date:
+                        departure_time = train['DepartureTime']
+                        from_paltform = train['Platform']
+                        estimated_time = route['EstTime']
+                        arrival_time = train['ArrivalTime']
+                        dest_platform = train['DestPlatform']
+                        train_number = train['Trainno']
+
+                elif datetime.datetime.strptime(train['DepartureTime'], '%d/%m/%Y %H:%M:%S') > current_date:
                     departure_time = train['DepartureTime']
-                    paltform = train['Platform']
+                    from_paltform = train['Platform']
                     estimated_time = route['EstTime']
                     arrival_time = train['ArrivalTime']
                     dest_platform = train['DestPlatform']
                     train_number = train['Trainno']
 
-            elif datetime.datetime.strptime(train['DepartureTime'], '%d/%m/%Y %H:%M:%S') > current_date:
-                departure_time = train['DepartureTime']
-                paltform = train['Platform']
-                estimated_time = route['EstTime']
-                arrival_time = train['ArrivalTime']
-                dest_platform = train['DestPlatform']
-                train_number = train['Trainno']
-
         if departure_time:
-            self._update_status = str(departure_time.split(" ")[1])
+            self._update_status = 'The next train is in ' + departure_time.split(' ')[1]
             self._departure_time = departure_time
-            self._from_platform = paltform
+            self._from_platform = from_paltform
             self._estimated_time = estimated_time
             self._arrival_time = arrival_time
             self._dest_platform = dest_platform
             self._train_number = train_number
+        else:
+            self._update_status = 'No routes found for today'
+            self._departure_time = None
+            self._from_platform = None
+            self._estimated_time = None
+            self._arrival_time = None
+            self._dest_platform = None
+            self._train_number = None
 
         yield from self.async_update_ha_state()
