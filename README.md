@@ -5,17 +5,22 @@ Israel Rails component for HomeAssistant
 
 BETA!
 
+I woulnt be able to make this without the help of @TomerFi, thanks!
+
 instructions:
   1. create a folder "custom_components" under you config folder
   2. copy the "israel_rails.py" file into "custom_components"
   3. in your configuration yaml add the following:
   ```
-    israel_rails:
-      fromStation: 8800
-      toStation: 3600
-      Time: 2400
-      timeZone: +2
-      scan_interval: 10
+israel_rails:
+  rosh_haayin_zafon_to_ta_university:
+    name: Home To School
+    from_station: '8800'
+    to_station: '3600'
+  ta_university_to_rosh_haayin_zafom:
+    name: School To Home
+    from_station: '3600'
+    to_station: '8800'
 ```
 
       
