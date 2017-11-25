@@ -164,7 +164,7 @@ class IsraelRail(Entity):
                 train_number = train['Trainno']
 
         if departure_time:
-            self._update_status = 'next train in ' + str(departure_time)
+            self._update_status = str(departure_time.split(" ")[1])
             self._departure_time = departure_time
             self._from_platform = paltform
             self._estimated_time = estimated_time
