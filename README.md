@@ -6,6 +6,7 @@ Israel Rails component for HomeAssistant
 BETA!
 
 I woulnt be able to make this without the help of @TomerFi, thanks!
+@TomerFi
 
 instructions:
   1. create a folder "custom_components" under you config folder
